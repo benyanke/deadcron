@@ -65,11 +65,11 @@ func checkHandler(w http.ResponseWriter, r *http.Request) {
 
 	checkId, found := mux.Vars(r)["checkId"]
 
-	if (!found) {
+	if !found {
 		fmt.Fprintf(w, "No check ID specified. Can not continue")
-		return;
+		return
 	}
-	fmt.Fprintf(w, "CHECK " + checkId + " HAS BEEN HANDLED ")
+	fmt.Fprintf(w, "CHECK "+checkId+" HAS BEEN HANDLED ")
 
 }
 
