@@ -47,6 +47,7 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 	Actions["/check/{token}"] = "Checkin from your host"
 	Actions["/status"] = "View status of all checks"
+	Actions["/status/{token}"] = "View status of a given check"
 	Actions["/"] = "dis."
 
 	Wrapper["actions"] = Actions
@@ -85,7 +86,13 @@ func checkHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "ALL OF YOUR CHECKS ARE BELONG TO US")
+	checkId, found := mux.Vars(r)["checkId"]
+
+	if !found {
+		fmt.Fprintf(w, "ALL OF YOUR CHECKS ARE BELONG TO US")
+		return
+	}
+	fmt.Fprintf(w, "CHECK "+checkId+" IS GOOD")
 }
 
 // Not working yet
@@ -111,6 +118,7 @@ func main() {
 	router.HandleFunc("/check/{checkId}", checkHandler).Methods("GET")
 
 	router.HandleFunc("/{status:status(?:\\/)?}", statusHandler).Methods("GET")
+	router.HandleFunc("/{status:status(?:\\/)?}/{checkId}", statusHandler).Methods("GET")
 	router.HandleFunc("/", defaultHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8081", router))
