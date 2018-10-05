@@ -15,6 +15,7 @@ type Check struct {
 	ExpectedInterval int
 	GracePeriod      int
 }
+type Checks map[string]Check
 
 type Payload struct {
 	Stuff Data
@@ -61,7 +62,15 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "CHECK HAS BEEN HANDLED")
+
+	checkId, found := mux.Vars(r)["checkId"]
+
+	if (!found) {
+		fmt.Fprintf(w, "No check ID specified. Can not continue")
+		return;
+	}
+	fmt.Fprintf(w, "CHECK " + checkId + " HAS BEEN HANDLED ")
+
 }
 
 func statusHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +96,10 @@ func mainOld() {
 func main() {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/check", checkHandler).Methods("GET")
+	router.HandleFunc("/check/", checkHandler).Methods("GET")
 	router.HandleFunc("/check/{checkId}", checkHandler).Methods("GET")
+
 	router.HandleFunc("/status", statusHandler).Methods("GET")
 	router.HandleFunc("/", defaultHandler).Methods("GET")
 
