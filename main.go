@@ -27,18 +27,17 @@ type Data struct {
 type Actions map[string]string
 type Wrapper map[string]Actions
 
-
 // Wrapper for the JSON Marshal function
 // Returns a panic if the marshal was not
 // a success, to ensure there's no unhandled
 // errors
 func JsonMustMarshal(data interface{}) []byte {
-    out, err := json.Marshal(data)
-    if err != nil {
-        panic(err)
-    }
+	out, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
 
-    return out
+	return out
 }
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
