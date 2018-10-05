@@ -5,8 +5,16 @@ import (
 	"net/http"
 
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"log"
 )
+
+type Check struct {
+	ID               string
+	Token            string
+	ExpectedInterval int
+	GracePeriod      int
+}
 
 type Payload struct {
 	Stuff Data
@@ -19,7 +27,6 @@ type Actions map[string]string
 type Wrapper map[string]Actions
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	//	fmt.Fprintf(w, "use /check or /status")
 
 	Wrapper := make(map[string]Actions)
 	Actions := make(map[string]string)
@@ -66,7 +73,8 @@ func loggingHandler(w http.Handler) {
 	fmt.Fprint(nil, "LOGGED AF")
 }
 
-func main() {
+// Old main
+func mainOld() {
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/check", checkHandler)
 	http.HandleFunc("/status", statusHandler)
@@ -74,4 +82,14 @@ func main() {
 	log.Print("Starting up on :8080, fam")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 	// loggingHandler))
+}
+
+func main() {
+	router := mux.NewRouter()
+
+	router.HandleFunc("/check/{checkId}", checkHandler).Methods("GET")
+	router.HandleFunc("/status", statusHandler).Methods("GET")
+	router.HandleFunc("/", defaultHandler).Methods("GET")
+
+	log.Fatal(http.ListenAndServe(":8081", router))
 }
