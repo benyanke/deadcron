@@ -3,7 +3,6 @@ language: go
 # USE THIS alongside makefile tag detection: $TRAVIS_TAG
 
 go: 
- - 1.9.x       # last version
  - 1.10.x      # current version
  - 1.11.x      # current version
 
