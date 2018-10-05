@@ -46,7 +46,7 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 	Wrapper := make(map[string]Actions)
 	Actions := make(map[string]string)
 
-	Actions["/check"] = "Checkin from your host"
+	Actions["/check/{token}"] = "Checkin from your host"
 	Actions["/status"] = "View status of all checks"
 	Actions["/"] = "dis."
 
