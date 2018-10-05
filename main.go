@@ -108,11 +108,10 @@ func mainOld() {
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/check", checkHandler).Methods("GET")
-	router.HandleFunc("/check/", checkHandler).Methods("GET")
+	router.HandleFunc("/{check:check(?:\\/)?}", checkHandler).Methods("GET")
 	router.HandleFunc("/check/{checkId}", checkHandler).Methods("GET")
 
-	router.HandleFunc("/status", statusHandler).Methods("GET")
+	router.HandleFunc("/{status:status(?:\\/)?}", statusHandler).Methods("GET")
 	router.HandleFunc("/", defaultHandler).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8081", router))
