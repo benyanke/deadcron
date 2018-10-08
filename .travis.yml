@@ -15,7 +15,6 @@ git:
 # flunk the build and immediately stop. It's sorta like having
 # set -e enabled in bash. 
 before_script:
-  - dep ensure
   #- sudo apt-get -qq update && sudo apt-get install -y ldap-utils oathtool  # need this for integration tests
   #- sudo apt-get -qq update && sudo apt-get install -y go-bindata           # need this for makefile
   # - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/)             # All the .go files, excluding vendor/
@@ -26,6 +25,14 @@ before_script:
 # Run bindata for assets
 #  - make bindata
 
+
+before_install:
+  # Setup dependency management tool
+  - curl -L -s https://github.com/golang/dep/releases/download/v0.3.1/dep-linux-amd64 -o $GOPATH/bin/dep
+  - chmod +x $GOPATH/bin/dep
+ 
+install:
+  - dep ensure
 
 script:
   - env                                       # Dump the env to make debugging easier
