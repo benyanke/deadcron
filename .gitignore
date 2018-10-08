@@ -1,3 +1,7 @@
 deadcron
 
 .*.swp
+
+# This is handled by godep
+vendor/
+
